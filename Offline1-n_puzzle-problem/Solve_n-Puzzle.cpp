@@ -3,6 +3,8 @@ using namespace std;
 int k;
 map<vector<vector<int>>,bool>m;
 
+
+
 int absolute(int x)
 {
     if(x>=0)
@@ -85,6 +87,30 @@ public:
         return state;
     }
 };
+//heruistic
+int hamming_distance(vector<vector<int>>board)
+{
+    int heruistic=0;
+    for(int i=0; i<k; i++)
+    {
+        for(int j=0; j<k; j++)
+        {
+            if(board[i][j]!=0)
+            {
+                if((i*k+j+1)!=board[i][j])
+                {
+
+                    heruistic++;
+                }
+            }
+
+
+        }
+    }
+    return heruistic;
+
+
+}
 int manhattan(vector<vector<int>>board)
 {
     int heruistic=0;
@@ -136,6 +162,23 @@ int inversionCount(vector<int>board)
     return inversion;
 }
 
+class Compare {
+public:
+    bool operator()(pair<int,Node*>a,pair<int,Node*>b)
+    {
+        if (a.first > b.first) {
+            return true;
+        }
+        else if (a.first == b.first
+                 && a.second->get_g()<b.second->get_g()) {
+            return true;
+        }
+
+        return false;
+    }
+};
+
+
 int main()
 {
 
@@ -178,7 +221,7 @@ int main()
     {
 
 
-    priority_queue<pair<int,Node*>,vector<pair<int,Node*>>,greater<pair<int,Node*>>>minheap;
+    priority_queue<pair<int,Node*>,vector<pair<int,Node*>>,Compare>minheap;
     Node* source;
     source=new Node(board);
     minheap.push(make_pair(manhattan(board),source));
